@@ -19,12 +19,18 @@
                     <x-nav-link :href="route('email-formatter.index')" :active="request()->routeIs('email-formatter.index')">
     {{ __('Email Formatter') }}
 </x-nav-link>
-               
+
+
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
-                
-
+                    <x-nav-link :href="route('employees.index')" :active="request()->routeIs('employees.*')">
+                        {{ __('Employees') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('attendances.index')" :active="request()->routeIs('attendances.*')">
+                        {{ __('Attendances') }}
+                    </x-nav-link>
+                    
                 </div>
             </div>
 
@@ -46,6 +52,8 @@
                     <x-slot name="content">
                         <x-dropdown-link :href="route('profile.edit')">
                             {{ __('Profile') }}
+
+                           
                         </x-dropdown-link>
 
                         <!-- Authentication -->

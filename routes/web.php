@@ -4,10 +4,17 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PdfProtectorController;
 use App\Http\Controllers\EmailFormatterController;
+use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\AttendanceController;
 
+Route::middleware(['auth'])->group(function () {
+    Route::resource('employees', EmployeeController::class);
+    Route::resource('attendances', AttendanceController::class);
+});
 Route::get('/email-formatter', [EmailFormatterController::class, 'index'])->name('email-formatter.index');
 Route::post('/email-formatter/preview', [EmailFormatterController::class, 'preview'])->name('email-formatter.preview');
 Route::post('/email-formatter/send', [EmailFormatterController::class, 'send'])->name('email-formatter.send');
+
 
 
 Route::get('/', function () {
@@ -27,6 +34,8 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+
 
 
 
