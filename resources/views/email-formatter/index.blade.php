@@ -46,6 +46,7 @@
             </div>
         </div>
     </div>
+    
 
     <!-- Modal -->
     <div id="preview-modal" class="fixed inset-0 hidden flex items-center justify-center bg-black bg-opacity-75 backdrop-blur-sm">

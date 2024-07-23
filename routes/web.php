@@ -6,10 +6,15 @@ use App\Http\Controllers\PdfProtectorController;
 use App\Http\Controllers\EmailFormatterController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\AttendanceReportController;
+
 
 Route::middleware(['auth'])->group(function () {
     Route::resource('employees', EmployeeController::class);
     Route::resource('attendances', AttendanceController::class);
+    Route::get('/attendance-reports', [AttendanceReportController::class, 'index'])->name('attendance-reports.index');
+Route::post('/attendance-reports/generate', [AttendanceReportController::class, 'generate'])->name('attendance-reports.generate');
+   
 });
 Route::get('/email-formatter', [EmailFormatterController::class, 'index'])->name('email-formatter.index');
 Route::post('/email-formatter/preview', [EmailFormatterController::class, 'preview'])->name('email-formatter.preview');

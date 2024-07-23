@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Attendance;
 use App\Models\Employee;
 use Illuminate\Http\Request;
-
+use Carbon\Carbon;
+use DatePeriod;
+use DateTime;
+use DateInterval;
 class AttendanceController extends Controller
 {
     public function index()
@@ -62,5 +65,66 @@ class AttendanceController extends Controller
         $attendance->delete();
 
         return redirect()->route('attendances.index')->with('success', 'Attendance deleted successfully.');
+    }
+    public function report(Request $request)
+    {
+        $request->validate([
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after_or_equal:start_date',
+        ]);
+    
+        $startDate = $request->start_date;
+        $endDate = $request->end_date;
+    
+        $employees = Employee::all();
+        $attendanceData = [];
+    
+        foreach ($employees as $employee) {
+            $attendances = Attendance::where('employee_id', $employee->id)
+                ->whereBetween('date', [$startDate, $endDate])
+                ->get();
+    
+            $present = 0;
+            $late = 0;
+            $undertime = 0;
+            $absent = 0;
+    
+            $dateRange = new DatePeriod(new DateTime($startDate), new DateInterval('P1D'), new DateTime($endDate . ' +1 day'));
+    
+            foreach ($dateRange as $date) {
+                $dailyAttendance = $attendances->where('date', $date->format('Y-m-d'))->first();
+    
+                if ($dailyAttendance) {
+                    $checkInTime = Carbon::parse($dailyAttendance->check_in);
+                    $checkOutTime = $dailyAttendance->check_out ? Carbon::parse($dailyAttendance->check_out) : null;
+    
+                    if ($checkInTime->format('H:i:s') > '08:30:00') {
+                        $late++;
+                    } else {
+                        $present++;
+                    }
+    
+                    if ($checkOutTime) {
+                        if ($checkOutTime->format('H:i:s') < '17:30:00') {
+                            $undertime++;
+                        }
+                    } else {
+                        $undertime++;
+                    }
+                } else {
+                    $absent++;
+                }
+            }
+    
+            $attendanceData[$employee->id] = [
+                'name' => $employee->name,
+                'present' => $present,
+                'late' => $late,
+                'undertime' => $undertime,
+                'absent' => $absent,
+            ];
+        }
+    
+        return view('attendances.report', compact('attendanceData', 'startDate', 'endDate'));
     }
 }
