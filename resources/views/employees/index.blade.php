@@ -25,7 +25,10 @@
                                     <th style="padding: 0.75rem 1rem; text-align: left; font-size: 0.75rem; font-weight: 500; color: #4a5568; text-transform: uppercase;">Email</th>
                                     <th style="padding: 0.75rem 1rem; text-align: left; font-size: 0.75rem; font-weight: 500; color: #4a5568; text-transform: uppercase;">Phone</th>
                                     <th style="padding: 0.75rem 1rem; text-align: left; font-size: 0.75rem; font-weight: 500; color: #4a5568; text-transform: uppercase;">Position</th>
+                                    <th style="padding: 0.75rem 1rem; text-align: left; font-size: 0.75rem; font-weight: 500; color: #4a5568; text-transform: uppercase;">Work Hours</th>
+                                    <th style="padding: 0.75rem 1rem; text-align: left; font-size: 0.75rem; font-weight: 500; color: #4a5568; text-transform: uppercase;">Grace Period</th>
                                     <th style="padding: 0.75rem 1rem; text-align: left; font-size: 0.75rem; font-weight: 500; color: #4a5568; text-transform: uppercase;">Actions</th>
+                                    
                                 </tr>
                             </thead>
                             <tbody>
@@ -36,6 +39,11 @@
                                         <td style="padding: 0.75rem 1rem;">{{ $employee->phone }}</td>
                                         <td style="padding: 0.75rem 1rem;">{{ $employee->position }}</td>
                                         <td style="padding: 0.75rem 1rem;">
+                                        {{ $employee->work_start_time ? $employee->work_start_time->format('H:i') : 'N/A' }} - 
+                                        {{ $employee->work_end_time ? $employee->work_end_time->format('H:i') : 'N/A' }}
+                                    </td>
+                                    <td style="padding: 0.75rem 1rem;">{{ $employee->grace_period_minutes }} minutes</td>
+                                    <td style="padding: 0.75rem 1rem;">
                                             <a href="{{ route('employees.show', $employee->id) }}" style="color: #3182ce; text-decoration: none; margin-right: 0.5rem;">View</a>
                                             <a href="{{ route('employees.edit', $employee->id) }}" style="color: #d69e2e; text-decoration: none; margin-right: 0.5rem;">Edit</a>
                                             <form action="{{ route('employees.destroy', $employee->id) }}" method="POST" style="display: inline;">

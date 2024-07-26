@@ -20,16 +20,19 @@ class EmployeeController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required',
-            'email' => 'required|email|unique:employees',
-            'phone' => 'required',
-            'position' => 'required',
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:employees',
+            'phone' => 'required|string|max:20',
+            'position' => 'required|string|max:255',
+            'work_start_time' => 'required|date_format:H:i',
+            'work_end_time' => 'required|date_format:H:i|after:work_start_time',
+            'grace_period_minutes' => 'required|integer|min:0',
         ]);
-
-        Employee::create($request->all());
-
-        return redirect()->route('employees.index')->with('success', 'Employee successfully added.');
+    
+        Employee::create($validatedData);
+    
+        return redirect()->route('employees.index')->with('success', 'Employee created successfully.');
     }
 
     public function show(Employee $employee)
@@ -43,18 +46,21 @@ class EmployeeController extends Controller
     }
 
     public function update(Request $request, Employee $employee)
-    {
-        $request->validate([
-            'name' => 'required',
-            'email' => 'required|email|unique:employees,email,'.$employee->id,
-            'phone' => 'required',
-            'position' => 'required',
-        ]);
+{
+    $validatedData = $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|string|email|max:255|unique:employees,email,' . $employee->id,
+        'phone' => 'required|string|max:20',
+        'position' => 'required|string|max:255',
+        'work_start_time' => 'required|date_format:H:i',
+        'work_end_time' => 'required|date_format:H:i|after:work_start_time',
+        'grace_period_minutes' => 'required|integer|min:0',
+    ]);
 
-        $employee->update($request->all());
+    $employee->update($validatedData);
 
-        return redirect()->route('employees.index')->with('success', 'Employee updated successfully.');
-    }
+    return redirect()->route('employees.index')->with('success', 'Employee updated successfully.');
+}
 
     public function destroy(Employee $employee)
     {

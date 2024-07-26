@@ -28,6 +28,22 @@
                             <label for="position" class="block text-sm font-medium text-gray-700">Position</label>
                             <input type="text" name="position" id="position" class="mt-1 block w-full" value="{{ $employee->position }}" required>
                         </div>
+
+                        <div class="mb-4">
+                            <label for="work_start_time" class="block text-gray-700 text-sm font-bold mb-2">Work Start Time:</label>
+                            <input type="time" name="work_start_time" id="work_start_time" value="{{ $employee->work_start_time ? $employee->work_start_time->format('H:i') : '' }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="work_end_time" class="block text-gray-700 text-sm font-bold mb-2">Work End Time:</label>
+                            <input type="time" name="work_end_time" id="work_end_time" value="{{ $employee->work_end_time ? $employee->work_end_time->format('H:i') : '' }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="grace_period_minutes" class="block text-gray-700 text-sm font-bold mb-2">Grace Period (minutes):</label>
+                            <input type="number" name="grace_period_minutes" id="grace_period_minutes" value="{{ $employee->grace_period_minutes }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                        </div>
+                        
                         <div class="flex justify-between mt-6">
                             <a href="{{ route('employees.index') }}" class="inline-flex items-center px-4 py-2 bg-gray-300 border border-transparent rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest hover:bg-gray-400 active:bg-gray-500 focus:outline-none focus:border-gray-500 focus:ring focus:ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150">
                                 Cancel

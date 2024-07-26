@@ -25,6 +25,7 @@
                                     <th style="padding: 0.75rem 1rem; text-align: left; font-size: 0.75rem; font-weight: 500; color: #4a5568; text-transform: uppercase;">Date</th>
                                     <th style="padding: 0.75rem 1rem; text-align: left; font-size: 0.75rem; font-weight: 500; color: #4a5568; text-transform: uppercase;">Check In</th>
                                     <th style="padding: 0.75rem 1rem; text-align: left; font-size: 0.75rem; font-weight: 500; color: #4a5568; text-transform: uppercase;">Check Out</th>
+                                    <th style="padding: 0.75rem 1rem; text-align: left; font-size: 0.75rem; font-weight: 500; color: #4a5568; text-transform: uppercase;">Status</th>
                                     <th style="padding: 0.75rem 1rem; text-align: left; font-size: 0.75rem; font-weight: 500; color: #4a5568; text-transform: uppercase;">Actions</th>
                                 </tr>
                             </thead>
@@ -32,9 +33,10 @@
                                 @foreach ($attendances as $attendance)
                                     <tr style="border-top: 1px solid #e2e8f0;">
                                         <td style="padding: 0.75rem 1rem;">{{ $attendance->employee->name }}</td>
-                                        <td style="padding: 0.75rem 1rem;">{{ $attendance->date }}</td>
-                                        <td style="padding: 0.75rem 1rem;">{{ $attendance->check_in }}</td>
-                                        <td style="padding: 0.75rem 1rem;">{{ $attendance->check_out }}</td>
+                                        <td style="padding: 0.75rem 1rem;">{{  $attendance->date->format('Y-m-d') }}</td>
+                                        <td style="padding: 0.75rem 1rem;">{{ $attendance->check_in ? $attendance->check_in->format('H:i:s') : 'N/A' }}</td>
+                                        <td style="padding: 0.75rem 1rem;">{{ $attendance->check_out ? $attendance->check_out->format('H:i:s') : 'N/A' }}</td>
+                                        <td style="padding: 0.75rem 1rem;">{{ ucfirst($attendance->status) }}</td>
                                         <td style="padding: 0.75rem 1rem;">
                                             <a href="{{ route('attendances.show', $attendance->id) }}" style="color: #3182ce; text-decoration: none; margin-right: 0.5rem;">View</a>
                                             <a href="{{ route('attendances.edit', $attendance->id) }}" style="color: #d69e2e; text-decoration: none; margin-right: 0.5rem;">Edit</a>
@@ -48,6 +50,7 @@
                                 @endforeach
                             </tbody>
                         </table>
+                       
                     </div>
                 </div>
             </div>
