@@ -14,6 +14,8 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('attendances', AttendanceController::class);
     Route::get('/attendance-reports', [AttendanceReportController::class, 'index'])->name('attendance-reports.index');
 Route::post('/attendance-reports/generate', [AttendanceReportController::class, 'generate'])->name('attendance-reports.generate');
+Route::get('/attendance-reports/export', [AttendanceReportController::class, 'export'])->name('attendance-reports.export');
+Route::get('/attendance-reports/pdf', [AttendanceReportController::class, 'generatePDF'])->name('attendance-reports.pdf');
    
 });
 Route::get('/email-formatter', [EmailFormatterController::class, 'index'])->name('email-formatter.index');

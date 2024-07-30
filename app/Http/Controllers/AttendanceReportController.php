@@ -6,6 +6,9 @@ use App\Models\Attendance;
 use Illuminate\Http\Request;
 use App\Models\Employee;
 use Carbon\Carbon;
+use App\Exports\AttendanceReportExport;
+use Maatwebsite\Excel\Facades\Excel;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class AttendanceReportController extends Controller
 {
@@ -46,7 +49,7 @@ class AttendanceReportController extends Controller
                 'name' => $employee->name,
                 'present' => $presentDays,
                 'late' => $lateDays,
-                'absent' => $absentDays,
+               
                 'missing' => $missingDates->count(),
             ];
         }
@@ -56,9 +59,36 @@ class AttendanceReportController extends Controller
             'start_date' => $startDate->toDateString(),
             'end_date' => $endDate->toDateString(),
         ];
-
+        session([
+            'report_data' => $reportData,
+            'report_summary' => $summary
+        ]);
         return view('attendance_reports.report', compact('reportData', 'summary', 'startDate', 'endDate'));
     }
+    public function export() 
+{
+    $reportData = session('report_data', []);
+    $summary = session('report_summary', []);
+
+    $startDate = $summary['start_date'] ?? 'N/A';
+    $endDate = $summary['end_date'] ?? 'N/A';
+    $totalEmployees = $summary['total_employees'] ?? 'N/A';
+
+
+    // Add summary information at the top of the sheet
+    $exportData = [
+        ['Attendance Report'],
+        ['Period:', $summary['start_date'] . ' to ' . $summary['end_date']],
+        ['Total Employees:', $summary['total_employees']],
+        [], // Empty row for spacing
+        ['Employee Name', 'Present', 'Late', 'Absent']
+    ];
+
+    // Add the actual report data
+    $exportData = array_merge($exportData, $reportData);
+
+    return Excel::download(new AttendanceReportExport($exportData), 'attendance_report.xlsx');
+}
 
     private function getWorkingDays($startDate, $endDate)
     {
@@ -70,58 +100,18 @@ class AttendanceReportController extends Controller
         }
         return $days;
     }
-}
-/*use App\Models\Employee;
-use App\Models\Attendance;
-use Carbon\Carbon;
-use Carbon\CarbonPeriod;
 
-class AttendanceReportController extends Controller
-{
-    public function generate(Request $request)
+    public function generatePDF()
     {
-        $request->validate([
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after_or_equal:start_date',
-        ]);
+        $reportData = session('report_data', []);
+        $summary = session('report_summary', []);
 
-        $startDate = Carbon::parse($request->start_date);
-        $endDate = Carbon::parse($request->end_date);
+        $startDate = $summary['start_date'] ?? 'N/A';
+        $endDate = $summary['end_date'] ?? 'N/A';
+        $totalEmployees = $summary['total_employees'] ?? 'N/A';
 
-        $employees = Employee::all();
-        $period = CarbonPeriod::create($startDate, $endDate);
+        $pdf = PDF::loadView('attendance_reports.pdf', compact('reportData', 'summary', 'startDate', 'endDate', 'totalEmployees'));
 
-        $attendanceData = [];
-        $summary = ['present' => 0, 'late' => 0, 'absent' => 0];
-
-        foreach ($employees as $employee) {
-            $employeeAttendance = [];
-            foreach ($period as $date) {
-                if ($date->isWeekend()) {
-                    continue; // Skip weekends
-                }
-
-                $attendance = Attendance::where('employee_id', $employee->id)
-                    ->whereDate('date', $date)
-                    ->first();
-
-                if ($attendance) {
-                    $status = $attendance->status;
-                    $summary[$status]++;
-                } else {
-                    $status = 'absent';
-                    $summary['absent']++;
-                }
-
-                $employeeAttendance[] = [
-                    'date' => $date->toDateString(),
-                    'status' => $status,
-                    'check_in' => $attendance ? $attendance->check_in : null,
-                ];
-            }
-            $attendanceData[$employee->id] = $employeeAttendance;
-        }
-
-        return view('attendance_reports.report', compact('attendanceData', 'summary', 'startDate', 'endDate', 'employees'));
+        return $pdf->download('attendance_report.pdf');
     }
-}*/
+}
