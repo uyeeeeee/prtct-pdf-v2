@@ -33,7 +33,7 @@
     </style>
 </head>
 <body>
-    <div class="title">Company-wide Attendance Report</div>
+    <div class="title">Attendance Report</div>
     
     <div class="summary">
         <p><strong>Period:</strong> {{ $startDate }} to {{ $endDate }}</p>

@@ -9,6 +9,9 @@ use Carbon\Carbon;
 use DatePeriod;
 use DateTime;
 use DateInterval;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\AttendancesExport;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class AttendanceController extends Controller
 {
@@ -157,5 +160,17 @@ class AttendanceController extends Controller
         }
     
         return view('attendances.report', compact('attendanceData', 'startDate', 'endDate'));
+    }
+
+    public function exportExcel()
+    {
+        return Excel::download(new AttendancesExport, 'attendances.xlsx');
+    }
+
+    public function exportPDF()
+    {
+        $attendances = Attendance::with('employee')->orderBy('date', 'desc')->get();
+        $pdf = Pdf::loadView('attendances.pdf', compact('attendances'));
+        return $pdf->download('attendances.pdf');
     }
 }
