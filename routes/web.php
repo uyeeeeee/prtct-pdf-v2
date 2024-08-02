@@ -7,6 +7,7 @@ use App\Http\Controllers\EmailFormatterController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\AttendanceReportController;
+use App\Http\Controllers\LeaveController;
 
 
 Route::middleware(['auth'])->group(function () {
@@ -18,7 +19,9 @@ Route::get('/attendance-reports/export', [AttendanceReportController::class, 'ex
 Route::get('/attendance-reports/pdf', [AttendanceReportController::class, 'generatePDF'])->name('attendance-reports.pdf');
 Route::get('/attendances/export/excel', [AttendanceController::class, 'exportExcel'])->name('attendances.export.excel');
 Route::get('/attendances/export/pdf', [AttendanceController::class, 'exportPDF'])->name('attendances.export.pdf');
-   
+Route::resource('leaves', LeaveController::class);
+Route::get('/leaves/export/excel', [LeaveController::class, 'exportExcel'])->name('leaves.export.excel');
+Route::get('/leaves/export/pdf', [LeaveController::class, 'exportPdf'])->name('leaves.export.pdf');
 });
 Route::get('/email-formatter', [EmailFormatterController::class, 'index'])->name('email-formatter.index');
 Route::post('/email-formatter/preview', [EmailFormatterController::class, 'preview'])->name('email-formatter.preview');

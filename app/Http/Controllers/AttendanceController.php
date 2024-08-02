@@ -164,13 +164,13 @@ class AttendanceController extends Controller
 
     public function exportExcel()
     {
-        return Excel::download(new AttendancesExport, 'attendances.xlsx');
+        return Excel::download(new AttendancesExport, 'Attendances.xlsx');
     }
 
     public function exportPDF()
     {
         $attendances = Attendance::with('employee')->orderBy('date', 'desc')->get();
         $pdf = Pdf::loadView('attendances.pdf', compact('attendances'));
-        return $pdf->download('attendances.pdf');
+        return $pdf->download('Attendances.pdf');
     }
 }

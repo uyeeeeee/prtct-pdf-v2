@@ -123,6 +123,7 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
-    
+    Maatwebsite\Excel\ExcelServiceProvider::class,
+Barryvdh\DomPDF\ServiceProvider::class,
 
 ];

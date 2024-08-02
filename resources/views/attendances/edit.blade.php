@@ -22,15 +22,15 @@
                         </div>
                         <div class="mb-4">
                             <label for="date" class="block text-sm font-medium text-gray-700">Date</label>
-                            <input type="date" name="date" id="date" class="mt-1 block w-full" value="{{ $attendance->date }}" required>
+                            <input type="date" name="date" id="date" class="mt-1 block w-full" value="{{ $attendance->date->format('Y-m-d') }}" required>
                         </div>
                         <div class="mb-4">
                             <label for="check_in" class="block text-sm font-medium text-gray-700">Check In</label>
-                            <input type="time" name="check_in" id="check_in" class="mt-1 block w-full" value="{{ $attendance->check_in }}" required>
+                            <input type="time" name="check_in" id="check_in" class="mt-1 block w-full" value="{{ $attendance->check_in->format('H:i') ?? 'N/A' }}" required>
                         </div>
                         <div class="mb-4">
                             <label for="check_out" class="block text-sm font-medium text-gray-700">Check Out</label>
-                            <input type="time" name="check_out" id="check_out" class="mt-1 block w-full" value="{{ $attendance->check_out }}">
+                            <input type="time" name="check_out" id="check_out" class="mt-1 block w-full" value="{{ $attendance->check_out->format('H:i') ?? 'N/A' }}">
                         </div>
                         <div class="flex justify-between mt-6">
                         <a href="{{ route('attendances.index') }}" class="inline-flex items-center px-4 py-2 bg-gray-300 border border-transparent rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest hover:bg-gray-400 active:bg-gray-500 focus:outline-none focus:border-gray-500 focus:ring focus:ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150">

@@ -25,6 +25,7 @@ class Attendance extends Model
         'check_out' => 'datetime',
         'is_absent' => 'boolean'
     ];
+    protected $dates = ['date', 'check_in', 'check_out'];
 
     public function employee()
     {
