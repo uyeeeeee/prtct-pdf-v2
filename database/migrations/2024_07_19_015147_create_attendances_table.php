@@ -14,7 +14,7 @@ class CreateAttendancesTable extends Migration
         $table->date('date');
         $table->enum('status', ['present', 'late', 'absent']);
         $table->time('check_in')->nullable();
-        $table->time('check_out')->nullable();
+       
        
         $table->timestamps();
     });
