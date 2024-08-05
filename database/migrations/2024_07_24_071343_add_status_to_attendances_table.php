@@ -9,7 +9,9 @@ return new class extends Migration
     public function up()
     {
         Schema::table('attendances', function (Blueprint $table) {
-            $table->enum('status', ['present', 'late', 'absent'])->after('check_out')->nullable();
+            if (!Schema::hasColumn('attendances', 'status')) {
+                $table->string('status')->check("status in ('present', 'late', 'absent')");
+            }
         });
     }
 

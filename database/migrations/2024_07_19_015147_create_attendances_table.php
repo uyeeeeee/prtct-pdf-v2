@@ -10,13 +10,14 @@ class CreateAttendancesTable extends Migration
 {
     Schema::create('attendances', function (Blueprint $table) {
         $table->id();
-        $table->foreignId('user_id')->constrained();
+        $table->unsignedBigInteger('employee_id');
         $table->date('date');
+        $table->dateTime('check_in');
+        $table->dateTime('check_out');  
         $table->enum('status', ['present', 'late', 'absent']);
-        $table->time('check_in')->nullable();
-       
-       
         $table->timestamps();
+        
+        $table->foreign('employee_id')->references('id')->on('employees');
     });
 }
     public function down()
