@@ -8,7 +8,9 @@ use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\AttendanceReportController;
 use App\Http\Controllers\LeaveController;
-
+use App\Http\Controllers\PriorityController;
+use App\Http\Controllers\TeamController;
+use App\Http\Controllers\WeeklyMaintenanceController;
 
 Route::middleware(['auth'])->group(function () {
     Route::resource('employees', EmployeeController::class);
@@ -27,8 +29,12 @@ Route::get('/email-formatter', [EmailFormatterController::class, 'index'])->name
 Route::post('/email-formatter/preview', [EmailFormatterController::class, 'preview'])->name('email-formatter.preview');
 Route::post('/email-formatter/send', [EmailFormatterController::class, 'send'])->name('email-formatter.send');
 
-
-
+Route::resource('priorities', PriorityController::class);
+    Route::resource('teams', TeamController::class);
+    Route::get('/weekly-maintenance', [WeeklyMaintenanceController::class, 'index'])->name('weekly-maintenance.index');
+    Route::post('/weekly-maintenance', [WeeklyMaintenanceController::class, 'store'])->name('weekly-maintenance.store');
+    Route::put('/weekly-maintenance/{weeklyMaintenance}', [WeeklyMaintenanceController::class, 'update'])->name('weekly-maintenance.update');
+    Route::delete('/weekly-maintenance/{weeklyMaintenance}', [WeeklyMaintenanceController::class, 'destroy'])->name('weekly-maintenance.destroy');
 Route::get('/', function () {
     return view('welcome');
 

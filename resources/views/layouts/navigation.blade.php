@@ -36,6 +36,12 @@
 <x-nav-link :href="route('leaves.index')" :active="request()->routeIs('leaves.*')">
         {{ __('Leaves') }}
     </x-nav-link>
+  
+    <x-nav-link :href="route('priorities.index')" :active="request()->routeIs('priorities.*')">
+    {{ __('Weekly Priorities') }}
+</x-nav-link>
+
+
                 </div>
             </div>
 
