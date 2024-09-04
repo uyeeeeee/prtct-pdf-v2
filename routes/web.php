@@ -11,6 +11,7 @@ use App\Http\Controllers\LeaveController;
 use App\Http\Controllers\PriorityController;
 use App\Http\Controllers\TeamController;
 use App\Http\Controllers\WeeklyMaintenanceController;
+use App\Http\Controllers\EmployeePriorityController;
 
 Route::middleware(['auth'])->group(function () {
     Route::resource('employees', EmployeeController::class);
@@ -35,6 +36,7 @@ Route::resource('priorities', PriorityController::class);
     Route::post('/weekly-maintenance', [WeeklyMaintenanceController::class, 'store'])->name('weekly-maintenance.store');
     Route::put('/weekly-maintenance/{weeklyMaintenance}', [WeeklyMaintenanceController::class, 'update'])->name('weekly-maintenance.update');
     Route::delete('/weekly-maintenance/{weeklyMaintenance}', [WeeklyMaintenanceController::class, 'destroy'])->name('weekly-maintenance.destroy');
+    Route::resource('employee-priorities', EmployeePriorityController::class);
 Route::get('/', function () {
     return view('welcome');
 

@@ -41,6 +41,9 @@
     {{ __('Weekly Priorities') }}
 </x-nav-link>
 
+<x-nav-link :href="route('employee-priorities.index')" :active="request()->routeIs('employee-priorities.*')">
+    {{ __('Employee Weekly Priorities') }}
+</x-nav-link>
 
                 </div>
             </div>
