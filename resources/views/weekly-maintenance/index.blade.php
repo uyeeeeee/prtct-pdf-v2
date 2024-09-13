@@ -9,6 +9,11 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
+                @if(session('success'))
+                        <div id="success-message" style="background-color: #c6f6d5; border: 1px solid #9ae6b4; color: #2f855a; padding: 0.75rem 1.25rem; border-radius: 0.25rem; margin-top: 0.5rem;">
+                            {{ session('success') }}
+                        </div>
+                    @endif
                     <form action="{{ route('weekly-maintenance.store') }}" method="POST" class="mb-4">
                         @csrf
                         <table class="w-full">
@@ -82,4 +87,13 @@
             </div>
         </div>
     </div>
+    <script>
+        // Script to hide success message after 3 seconds
+        setTimeout(function() {
+            var successMessage = document.getElementById('success-message');
+            if (successMessage) {
+                successMessage.style.display = 'none';
+            }
+        }, 3000); // 3000 milliseconds = 3 seconds
+    </script>
 </x-app-layout>

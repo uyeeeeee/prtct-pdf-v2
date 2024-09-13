@@ -51,12 +51,15 @@ class PdfProtectorController extends Controller
         }
 
         if (count($protectedFiles) == 1) {
-            // If only one file, send it as a download
+            // If only one file, send it as a download with no-cache headers
             return response($protectedFiles[0]['content'])
                 ->header('Content-Type', 'application/pdf')
+                ->header('Cache-Control', 'no-cache, must-revalidate')
+                ->header('Pragma', 'no-cache')
+                ->header('Expires', '0')
                 ->header('Content-Disposition', 'attachment; filename="' . $protectedFiles[0]['name'] . '"');
         } else {
-            // If multiple files, create a zip using PhpZip
+            // If multiple files, create a zip using PhpZip with no-cache headers
             $zipFile = new ZipFile();
             $zipFileName = 'protected_pdfs_' . time() . '.zip';
             $zipFilePath = storage_path('app/public/' . $zipFileName);
@@ -66,9 +69,12 @@ class PdfProtectorController extends Controller
             }
 
             $zipFile->saveAsFile($zipFilePath)->close();
-    
+
             return response()->download($zipFilePath, $zipFileName, [
                 'Content-Type' => 'application/zip',
+                'Cache-Control' => 'no-cache, must-revalidate',
+                'Pragma' => 'no-cache',
+                'Expires' => '0',
                 'Content-Disposition' => 'attachment; filename="' . $zipFileName . '"',
             ])->deleteFileAfterSend(true);
         }
